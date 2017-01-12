@@ -44,7 +44,8 @@ class show_db_model extends CI_Model {
 								'備註'=>$row-> 備註,
 								'地址'=>$row-> 地址,
 								'EMAIL'=>$row-> EMAIL,
-								'帳號'=>$row-> 帳號,);
+								'帳號'=>$row-> 帳號,
+								'手機1'=>$row-> 手機1,);
 			}
 			return  $result;
 		}
