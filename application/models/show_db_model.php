@@ -5,7 +5,7 @@ class show_db_model extends CI_Model {
 			}
 
 	function show_db($keyword){
-		$query = $this->db->query("SELECT * FROM `table2` WHERE `company_name` LIKE '%$keyword%' OR `customer_name` LIKE '%$keyword%'
+		$query = $this->db->query("SELECT * FROM `table3` WHERE `company_name` LIKE '%$keyword%' OR `customer_name` LIKE '%$keyword%'
 																								 OR `電話` LIKE '%$keyword%'
 																								 OR `手機1` LIKE '%$keyword%'
 																								 OR `身分證字號` LIKE '%$keyword%'
@@ -35,13 +35,16 @@ class show_db_model extends CI_Model {
 	}
 
 	function show_notes($id){
-		$query = $this->db->query("SELECT * FROM `table2` WHERE `id` = '$id' ");
+		$query = $this->db->query("SELECT * FROM `table3` WHERE `id` = '$id' ");
 		if($query->result()!=null){
 			foreach ($query->result() as $row) {
 				$result[] = array('id'=>$row-> id,
 								'company_name'=>$row-> company_name,
 								'customer_name'=>$row-> customer_name,
-								'備註'=>$row-> 備註,);
+								'備註'=>$row-> 備註,
+								'地址'=>$row-> 地址,
+								'EMAIL'=>$row-> EMAIL,
+								'帳號'=>$row-> 帳號,);
 			}
 			return  $result;
 		}

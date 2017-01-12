@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		tr:nth-child(even) {
 		    background-color: #dddddd;
 		}
-</style>
+	</style>
 
 
 </head>
@@ -46,6 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<h1></h1>
 
 	<div id="body">
+
 
 		<?php 
 
@@ -72,23 +73,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<table style="width:100%" border="1" >
 			<tr>
-				<th>編號</th>
-				<th>姓名</th>
-				<th>日期</th>
-				<th>買賣</th>
+				<th nowrap="nowrap">編號</th>
+				<th nowrap="nowrap">姓名</th>
+				<th nowrap="nowrap">日期</th>
+				<th nowrap="nowrap">買賣</th>
 				<th nowrap="nowrap">股票</th>
-				<th>LINE</th>
-				<th>電話</th>
-				<th>手機1</th>
-				<th>手機2</th>
-				<th>價位</th>
-				<th>張數</th>
-				<th>來源</th>
-				<th>身分證字號</th>
-				<th>EMAIL</th>
-				<th>帳號</th>
-				<th>地址</th>
-				<th>備註</th>
+				<th nowrap="nowrap">LINE</th>
+				<th nowrap="nowrap">電話</th>
+				<th nowrap="nowrap">手機1</th>
+				<th nowrap="nowrap">手機2</th>
+				<th nowrap="nowrap">價位</th>
+				<th nowrap="nowrap">張數</th>
+				<th nowrap="nowrap">來源</th>
+				<th nowrap="nowrap">身分證</th>
+				<th nowrap="nowrap">更多</th>
 			</tr>
 
 			<?php 
@@ -109,15 +107,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					echo "<td>".$data[$i]['張數']."</td>";
 					echo "<td>".$data[$i]['來源']."</td>";
 					echo "<td>".$data[$i]['身分證字號']."</td>";
-					echo "<td>".$data[$i]['EMAIL']."</td>";
-					echo "<td>".$data[$i]['帳號']."</td>";
-					echo "<td>".$data[$i]['地址']."</td>";
-					echo "<td>".$data[$i]['備註']."</td>";
+			?>
+					<td nowrap="nowrap"><a href="#" onclick="window.open(' show_notes?id=<?php echo $data[$i]['id']; ?> ', '畚箕', config='height=600,width=1000');">更多</a></td>
+			<?php
 					echo "</tr>";
 				}
 			}
 			
 			?>
+		</table>
 
 	</div>
 

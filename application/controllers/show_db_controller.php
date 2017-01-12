@@ -72,9 +72,10 @@ class show_db_controller extends CI_Controller {
 
 	public function show_notes()
 	{
-		$id = $_POST['id'];
+		$id = $_GET['id'];
 		$this->load->Model("Show_db_model");
 		$data = $this->Show_db_model->show_notes($id);
+		$this->load->view('show_db_note',array('data' => $data));
 	}
 
 }
