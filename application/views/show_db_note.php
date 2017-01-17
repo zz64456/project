@@ -66,6 +66,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<tr>
 						<th class="css_th2">備註</th><?php echo '<td class="css_td2" class="css_notes">'.$data[$i]['備註']."</td>"; ?>
 					</tr>
+					<tr>
+						<th class="css_th2">查看其他</th><td nowrap="nowrap"><a href="#" onclick="window.open(' show_db?cellphone1=<?php echo $data[$i]['手機1']; ?> ', '畚箕', config='height=600,width=1000');">查看其他</a></td>
+					</tr>
 
 
 				<?php 

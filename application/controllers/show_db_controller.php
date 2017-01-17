@@ -31,8 +31,12 @@ class show_db_controller extends CI_Controller {
 	//一般搜尋
 	public function show_db()
 	{	
+
 		if (isset($_POST['keyword'])) {
 			$keyword=$_POST['keyword'];
+		}
+		else if (isset($_GET['cellphone1'])){
+			$keyword = $_GET['cellphone1'];
 		}
 		else {
 			$keyword='';
@@ -40,7 +44,6 @@ class show_db_controller extends CI_Controller {
 		
 
 		if (strlen($keyword)>0) {
-			$keyword=$_POST['keyword'];
 			$this->load->Model("Show_db_model");
 			$data = $this->Show_db_model->show_db($keyword);
 			if (count($data)>=1) {
