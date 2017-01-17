@@ -63,8 +63,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<div align="center">
 			<form action="show_db" method="POST" name="" style= "display:inline">
-			<input type="text" name="keyword" value="">
-			<input type="submit" name="" value="搜尋">
+				<input type="text" name="keyword" value="">
+				<input type="submit" name="" value="原檔搜尋">
+			</form>
+			<input type ="button" onclick="self.location.href='home'" value="回到上一頁" style= "display:inline"></input>
+		</div>
+
+		<div align="center">
+			<form action="show_all_number_processed" method="POST" name="" style= "display:inline">
+				<input type="text" name="keyword" value="">
+				<input type="submit" name="" value="單一搜尋">
 			</form>
 			<input type ="button" onclick="self.location.href='home'" value="回到上一頁" style= "display:inline"></input>
 		</div>
