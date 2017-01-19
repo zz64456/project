@@ -23,8 +23,9 @@ class show_db_controller extends CI_Controller {
 		$this->load->view('test');
 	}
 
-	public function home()
+	public function test()
 	{	
+		
 		$this->load->view('test');
 	}
 
@@ -45,7 +46,21 @@ class show_db_controller extends CI_Controller {
 
 		if (strlen($keyword)>0) {
 			$this->load->Model("Show_db_model");
-			$data = $this->Show_db_model->show_db($keyword);
+			$qq = "SELECT * FROM `table3` WHERE `company_name` LIKE '%$keyword%' OR `customer_name` LIKE '%$keyword%'
+																								 OR `電話` LIKE '%$keyword%'
+																								 OR `手機1` LIKE '%$keyword%'
+																								 OR `身分證字號` LIKE '%$keyword%'
+																								 OR `來源` LIKE '%$keyword%'";
+			$data = $this->Show_db_model->show_db($keyword);//撈資料
+
+			//判斷content檔案存在與否，存在則刪除
+			$file = 'C:\xampp\tmp\content.csv';
+			if(file_exists($file)){
+				unlink($file);
+			}
+
+			$this->Show_db_model->put_NewData($data);//進入新資料庫
+
 			if (count($data)>=1) {
 				foreach ($data as $row ) {
 				    $_SESSION['id'] = $row['id'];
@@ -67,7 +82,7 @@ class show_db_controller extends CI_Controller {
 					$_SESSION['EMAIL'] = $row['EMAIL'];
 				}
 			}
-			$this->load->view('show_db_view',array('data' => $data));
+			$this->load->view('show_db_view',array('data' => $data, 'qq'=> $qq));
 		}
 		else {
 			$this->load->view('show_db_view');
@@ -90,6 +105,17 @@ class show_db_controller extends CI_Controller {
 			$keyword=$_POST['keyword'];
 			$this->load->Model("Show_db_model");
 			$data = $this->Show_db_model->show_all_number_processed($keyword);
+
+
+			//判斷content檔案存在與否，存在則刪除
+			$file = 'C:\xampp\tmp\content.csv';
+			if(file_exists($file)){
+				unlink($file);
+			}
+
+			$this->Show_db_model->put_NewData($data);//進入新資料庫
+
+
 			if (count($data)>=1) {
 				foreach ($data as $row ) {
 				    $_SESSION['id'] = $row['id'];
@@ -126,6 +152,15 @@ class show_db_controller extends CI_Controller {
 		$this->load->Model("Show_db_model");
 		$data = $this->Show_db_model->show_notes($id);
 		$this->load->view('show_db_note',array('data' => $data));
+	}
+
+
+	public function download_excel()
+	{	
+		$this->load->helper('download');
+		$data = file_get_contents('C:\xampp\tmp\content.csv');
+		$name = 'content.csv';
+		force_download($name, @iconv("UTF-8","Big5//IGNORE", $data));
 	}
 
 

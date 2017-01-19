@@ -60,6 +60,7 @@ class show_db_model extends CI_Model {
 		}
 	}
 
+	//備註
 	function show_notes($id){
 		$query = $this->db->query("SELECT * FROM `table3` WHERE `id` = '$id' ");
 		if($query->result()!=null){
@@ -106,6 +107,21 @@ class show_db_model extends CI_Model {
 			}
 			return  $result;
 		}
+	}
+
+
+	//將要儲存的資料放入資料庫
+	function put_NewData($data){
+		$new = $data;
+		$this->db->query("DELETE FROM `empty` WHERE 1");//清空資料表
+		$this->db->query("INSERT INTO `empty`(`id`, `日期`, `買賣`, `LINE`, `company_name`, `customer_name`, `電話`, `手機1`, `手機2`, `價位`, `張數`, `來源`, `備註`, `帳號`, `身分證字號`, `地址`, `EMAIL`) VALUES ( '0id', '日期', '買賣', 'LINE', '股票名稱', '姓名', '電話', '手機1', '手機2', '價位', '張數', '來源', '備註', '帳號', '身分證字號', '地址', 'EMAIL' );
+			");//先放入欄位名稱
+		for ($i=0; $i < count($new); $i++) { 
+			//echo $new[$i]['id']."<br>";
+			$new[$i]['備註'] = "請看網頁";
+			$this->db->insert('empty',$new[$i]);
+		}
+		$this->db->query("SELECT * into outfile 'C:/xampp/tmp/content.csv' FIELDS TERMINATED BY ',' ESCAPED BY ' ' LINES TERMINATED BY '\r' from empty");
 	}
 
 }

@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
+
+
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -39,14 +41,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 
-
-
 <div id="container">
 
 	<h1></h1>
 
 	<div id="body">
-
 
 		<?php 
 
@@ -66,7 +65,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<input type="text" name="keyword" value="">
 				<input type="submit" name="" value="原檔搜尋">
 			</form>
-			<input type ="button" onclick="self.location.href='home'" value="回到上一頁" style= "display:inline"></input>
 		</div>
 
 		<div align="center">
@@ -74,10 +72,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<input type="text" name="keyword" value="">
 				<input type="submit" name="" value="單一搜尋">
 			</form>
-			<input type ="button" onclick="self.location.href='home'" value="回到上一頁" style= "display:inline"></input>
 		</div>
 
+
+		<!-- 下載按鈕 -->
+		<form action="download_excel"><input type="submit" name="action" value="下載EXCEL"></form>
+		
+
 		<br><br>
+
 
 		<table style="width:100%" border="1" >
 			<tr>
