@@ -58,15 +58,18 @@ class user_authentication extends CI_Controller {
 	{
 		$account = $_POST['acct'];
 		$password = $_POST['pswd'];
+		$error_message = '輸入錯誤，再試一次!';
 
 		$flag = $this->login_database->login($account, $password);//進入新資料庫
 
 		if ($flag == 1) {
-			redirect('/show_db_controller/show_db/', 'refresh');
+			$_SESSION['$account'] = $account;
+			$this->load->view('show_db_view',array('acc' => $_SESSION['$account']));
+			//redirect('/show_db_controller/show_db');
 		}
 		else {
-			redirect('/user_authentication/login/', 'refresh');
-
+			//redirect('/user_authentication/login');
+			$this->load->view('login_view',array('error_message' => $error_message));
 		}
 		
 	}

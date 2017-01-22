@@ -6,7 +6,8 @@ class show_db_controller extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-        $this->load->helper('url');     
+        $this->load->helper('url');
+        session_start();
     }   
 
 	/**
@@ -176,12 +177,6 @@ class show_db_controller extends CI_Controller {
 			echo "fail";
 		}
 		
-	}
-
-
-	public function login()
-	{	
-		$this->load->view('login_view');
 	}
 
 }

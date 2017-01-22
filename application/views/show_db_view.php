@@ -43,6 +43,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<?php 
 
+		echo "使用者帳號:".$acc;
+
 		if (isset($keyword)) {
 			echo "搜尋: <b>".$keyword."</b><br>";
 		}

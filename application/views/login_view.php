@@ -110,9 +110,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<body>
 		<?php
-		if (isset($logout_message)) {
+		if (isset($error_message)) {
 			echo "<div class='message'>";
-			echo $logout_message;
+			echo $error_message;
 			echo "</div>";
 		}
 		?>
