@@ -77,7 +77,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<form action="download_excel" method="POST">
 			<input type="submit" name="action" value="下載EXCEL">
 			<?php if (isset($keyword)) { ?>
-				<?php echo $original_or_processed."<br>".$keyword; ?>
+				<?php //echo $original_or_processed."<br>".$keyword; ?>
 				<input type="hidden" name="original_or_processed" value="<?php echo $original_or_processed; ?>">
 				<input type="hidden" name="download_keyword" value="<?php echo $keyword; ?>">
 			<?php } ?>
