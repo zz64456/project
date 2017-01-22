@@ -56,14 +56,6 @@ class show_db_controller extends CI_Controller {
 			
 			$data = $this->Show_db_model->show_db($keyword);//撈資料
 
-			// //判斷content檔案存在與否，存在則刪除
-			// $file = 'C:\xampp\tmp\content.csv';
-			// if(file_exists($file)){
-			// 	unlink($file);
-			// }
-
-			// $this->Show_db_model->put_NewData($data);//進入新資料庫
-
 			if (count($data)>=1) {
 				foreach ($data as $row ) {
 				    $_SESSION['id'] = $row['id'];
@@ -119,9 +111,6 @@ class show_db_controller extends CI_Controller {
 				unlink($file);
 			}
 
-			$this->Show_db_model->put_NewData($data);//進入新資料庫
-
-
 			if (count($data)>=1) {
 				foreach ($data as $row ) {
 				    $_SESSION['id'] = $row['id'];
@@ -166,24 +155,23 @@ class show_db_controller extends CI_Controller {
 		$this->load->Model("Show_db_model");
 		if (isset($_POST['download_keyword'])) {
 			$keyword = $_POST['download_keyword'];
-			echo $keyword;
-			if ($original_or_processed = 1) {
-				$data1 = $this->Show_db_model->show_db($keyword);//撈資料
-			} else {
-				$data1 = $this->Show_db_model->show_all_number_processed($keyword);//撈資料
-			}
-			
 			//判斷content檔案存在與否，存在則刪除
 			$file = 'C:\xampp\tmp\content.csv';
 			if(file_exists($file)){
 				unlink($file);
 			}
-
+			if ($_POST['original_or_processed'] == 1) {
+				$data1 = $this->Show_db_model->show_db($keyword);//撈資料
+			} else {
+				$data1 = $this->Show_db_model->show_all_number_processed($keyword);//撈資料
+			}
+			
 			$this->Show_db_model->put_NewData($data1);//進入新資料庫
 			$this->load->helper('download');
 			$data2 = file_get_contents('C:\xampp\tmp\content.csv');
 			$name = 'content.csv';
 			force_download($name, @iconv("UTF-8","Big5//IGNORE", $data2));
+
 		} else {
 			echo "fail";
 		}
