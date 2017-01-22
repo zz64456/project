@@ -11,12 +11,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="Win/js/jquery-3.1.1.min"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-	<script type="text/javascript">  
-
-	</script>
-
-
-
 	<style>
 		table {
 		    font-family: arial, sans-serif;
@@ -49,6 +43,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<?php 
 
+		if (isset($keyword)) {
+			echo "搜尋: <b>".$keyword."</b><br>";
+		}
+
 		if (isset($data)) {
 			echo "<br>";
 			echo "資料筆數: ". count($data)."<br>";
@@ -76,7 +74,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 		<!-- 下載按鈕 -->
-		<form action="download_excel"><input type="submit" name="action" value="下載EXCEL"></form>
+		<form action="download_excel" method="POST">
+			<input type="submit" name="action" value="下載EXCEL">
+			<?php if (isset($keyword)) { ?>
+				<input type="hidden" name="original_or_processed" value="<?php echo $original_or_processed; ?>">
+				<input type="hidden" name="download_keyword" value="<?php echo $keyword; ?>">
+			<?php } ?>
+		</form>
 		
 
 		<br><br>

@@ -83,31 +83,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 
-
-		<!--
-		<table style="border:5px #cccccc solid; table-layout:fixed; word-wrap:break-word; word-break:break-all;" rules="all" cellpadding='5';>
-			<tr>
-				<td>q</td>
-				<td>qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq</td>
-			</tr>
-			<tr>
-				<td>q</td>
-				<td>q</td>
-			</tr>
-			<tr>
-				<td>q</td>
-				<td>q</td>
-			</tr>
-			
-		</table>
-		-->
-
-
-
-
-
-
-
-
 </body>
 </html>

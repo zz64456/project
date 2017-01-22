@@ -3,6 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class show_db_controller extends CI_Controller {
 
+	public function __construct()
+    {
+        parent::__construct();
+        $this->load->helper('url');     
+    }   
+
 	/**
 	 * Index Page for this controller.
 	 *
@@ -32,34 +38,31 @@ class show_db_controller extends CI_Controller {
 	//一般搜尋
 	public function show_db()
 	{	
+		set_time_limit(0);
+
+		$original_or_processed = 1;
 
 		if (isset($_POST['keyword'])) {
 			$keyword=$_POST['keyword'];
-		}
-		else if (isset($_GET['cellphone1'])){
+		} else if (isset($_GET['cellphone1'])) {
 			$keyword = $_GET['cellphone1'];
-		}
-		else {
+		} else {
 			$keyword='';
 		}
 		
 
 		if (strlen($keyword)>0) {
 			$this->load->Model("Show_db_model");
-			$qq = "SELECT * FROM `table3` WHERE `company_name` LIKE '%$keyword%' OR `customer_name` LIKE '%$keyword%'
-																								 OR `電話` LIKE '%$keyword%'
-																								 OR `手機1` LIKE '%$keyword%'
-																								 OR `身分證字號` LIKE '%$keyword%'
-																								 OR `來源` LIKE '%$keyword%'";
+			
 			$data = $this->Show_db_model->show_db($keyword);//撈資料
 
-			//判斷content檔案存在與否，存在則刪除
-			$file = 'C:\xampp\tmp\content.csv';
-			if(file_exists($file)){
-				unlink($file);
-			}
+			// //判斷content檔案存在與否，存在則刪除
+			// $file = 'C:\xampp\tmp\content.csv';
+			// if(file_exists($file)){
+			// 	unlink($file);
+			// }
 
-			$this->Show_db_model->put_NewData($data);//進入新資料庫
+			// $this->Show_db_model->put_NewData($data);//進入新資料庫
 
 			if (count($data)>=1) {
 				foreach ($data as $row ) {
@@ -82,7 +85,7 @@ class show_db_controller extends CI_Controller {
 					$_SESSION['EMAIL'] = $row['EMAIL'];
 				}
 			}
-			$this->load->view('show_db_view',array('data' => $data, 'qq'=> $qq));
+			$this->load->view('show_db_view',array('data' => $data, 'keyword'=> $keyword, 'original_or_processed'=> $original_or_processed));
 		}
 		else {
 			$this->load->view('show_db_view');
@@ -93,11 +96,14 @@ class show_db_controller extends CI_Controller {
 	//搜尋...篩選過後無重複
 	public function show_all_number_processed()
 	{	
+		set_time_limit(0);
+
+		$original_or_processed = 2;
+
 		if (isset($_POST['keyword'])) {
-			$keyword=$_POST['keyword'];
-		}
-		else {
-			$keyword='';
+			$keyword = $_POST['keyword'];
+		} else {
+			$keyword = '';
 		}
 		
 
@@ -137,7 +143,7 @@ class show_db_controller extends CI_Controller {
 					$_SESSION['EMAIL'] = $row['EMAIL'];
 				}
 			}
-			$this->load->view('show_db_view',array('data' => $data));
+			$this->load->view('show_db_view',array('data' => $data, 'keyword'=> $keyword, 'original_or_processed'=> $original_or_processed));
 		}
 		else {
 			$this->load->view('show_db_view');
@@ -157,11 +163,37 @@ class show_db_controller extends CI_Controller {
 
 	public function download_excel()
 	{	
-		$this->load->helper('download');
-		$data = file_get_contents('C:\xampp\tmp\content.csv');
-		$name = 'content.csv';
-		force_download($name, @iconv("UTF-8","Big5//IGNORE", $data));
+		$this->load->Model("Show_db_model");
+		if (isset($_POST['download_keyword'])) {
+			$keyword = $_POST['download_keyword'];
+			echo $keyword;
+			if ($original_or_processed = 1) {
+				$data1 = $this->Show_db_model->show_db($keyword);//撈資料
+			} else {
+				$data1 = $this->Show_db_model->show_all_number_processed($keyword);//撈資料
+			}
+			
+			//判斷content檔案存在與否，存在則刪除
+			$file = 'C:\xampp\tmp\content.csv';
+			if(file_exists($file)){
+				unlink($file);
+			}
+
+			$this->Show_db_model->put_NewData($data1);//進入新資料庫
+			$this->load->helper('download');
+			$data2 = file_get_contents('C:\xampp\tmp\content.csv');
+			$name = 'content.csv';
+			force_download($name, @iconv("UTF-8","Big5//IGNORE", $data2));
+		} else {
+			echo "fail";
+		}
+		
 	}
 
+
+	public function login()
+	{	
+		$this->load->view('login_view');
+	}
 
 }
