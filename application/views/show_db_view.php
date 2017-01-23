@@ -43,10 +43,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<?php 
 
-		echo "使用者帳號:".$acc;
+		echo "使用者帳號:".$_SESSION['user_name']."<br><br>";
 
 		if (isset($keyword)) {
-			echo "搜尋: <b>".$keyword."</b><br>";
+			echo "搜尋: <b>".$keyword."</b>";
 		}
 
 		if (isset($data)) {

@@ -124,4 +124,10 @@ class show_db_model extends CI_Model {
 		$this->db->query("SELECT * into outfile 'C:/xampp/tmp/content.csv' FIELDS TERMINATED BY ',' ESCAPED BY ' ' LINES TERMINATED BY '\r' from empty");
 	}
 
+
+	function move_record($user_name, $time, $move, $data){
+		$this->db->query("INSERT INTO `move_record`(`id`, `user_name`, `time`, `action`, `data`) VALUES ( '', '$user_name', '$time', '$move', '$data');
+			");//先放入欄位名稱
+	}
+
 }

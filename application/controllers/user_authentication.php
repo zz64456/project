@@ -63,9 +63,10 @@ class user_authentication extends CI_Controller {
 		$flag = $this->login_database->login($account, $password);//進入新資料庫
 
 		if ($flag == 1) {
-			$_SESSION['$account'] = $account;
-			$this->load->view('show_db_view',array('acc' => $_SESSION['$account']));
-			//redirect('/show_db_controller/show_db');
+			$_SESSION['account'] = $account;
+			//$this->load->library('../Show_db_controller/__construct');
+			//$this->load->view('show_db_view',array('acc' => $_SESSION['$account']));
+			redirect('/show_db_controller/show_db');
 		}
 		else {
 			//redirect('/user_authentication/login');
