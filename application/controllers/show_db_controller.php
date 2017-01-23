@@ -56,7 +56,6 @@ class Show_db_controller extends CI_Controller {
 
 		if (strlen($keyword)>0) {
 			$this->load->Model("Show_db_model");//載入model
-
 			$time = date("Y-m-d H:i:s");
 			$this->Show_db_model->move_record($_SESSION['user_name'], $time, 'search', $keyword);//動作紀錄
 
@@ -191,24 +190,28 @@ class Show_db_controller extends CI_Controller {
 
 	public function login_check()
 	{
-		$account = $_POST['acct'];
-		$password = $_POST['pswd'];
-		$error_message = '輸入錯誤，再試一次!';
-		$this->load->Model("login_database");
-		$data = $this->login_database->login($account, $password);//進入新資料庫
+		if (isset($_POST['acct']) && isset($_POST['pswd'])) {
+			$account = $_POST['acct'];
+			$password = $_POST['pswd'];
+			$error_message = '輸入錯誤，再試一次!';
+			$this->load->Model("login_database");
+			$data = $this->login_database->login($account, $password);//進入新資料庫
 
-		if ($data != false) {
-			//print_r($data);
-			$_SESSION['account'] = $account;
-			$_SESSION['user_name'] = $data['user_name'];
-			//$this->load->library('../Show_db_controller/__construct');
-			$this->load->view('show_db_view');
-			//redirect('/show_db_controller/show_db');
+			if ($data != false) {
+				//print_r($data);
+				$_SESSION['account'] = $account;
+				$_SESSION['user_name'] = $data['user_name'];
+				//$this->load->library('../Show_db_controller/__construct');
+				$this->load->view('show_db_view');
+				//redirect('/show_db_controller/show_db');
+			} else {
+				//redirect('/user_authentication/login');
+				$this->load->view('login_view',array('error_message' => $error_message));
+			}
+		} else {
+			$this->load->view('login_view');
 		}
-		else {
-			//redirect('/user_authentication/login');
-			$this->load->view('login_view',array('error_message' => $error_message));
-		}
+		
 	}
 
 }
