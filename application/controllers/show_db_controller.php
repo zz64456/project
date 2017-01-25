@@ -10,6 +10,8 @@ class Show_db_controller extends CI_Controller {
         session_start();
         $this->load->helper('date');
         date_default_timezone_set('Asia/Taipei');
+        ini_set('memory_limit', '256M');
+
     }   
 
 	/**
@@ -213,15 +215,8 @@ class Show_db_controller extends CI_Controller {
 		
 	}
 
-
-	public function testing(){	
-		$this->load->model('show_db_model');
-        $this->load->view('test');
-	}
-
-
 	public function import(){
-
+		set_time_limit(0);
       	if(isset($_POST["Import"])){
       		$this->load->model('show_db_model');
             $filename = $_FILES["file"]["tmp_name"];
@@ -255,15 +250,36 @@ class Show_db_controller extends CI_Controller {
                         '地址' => $emapData[14],
                         'EMAIL' => $emapData[15],
                         );
-                    
-                    $insertId = $this->show_db_model->insertCSV($data); //進資料庫
+                    //以下修改欄位以便進資料庫OR輸出為EXCEL
+                    if (strlen($data['手機1'])>0 && $data['手機1'][0] == 9) { //判斷是否補上0
+                    	$data['手機1'] = "0".$data['手機1'];
+                    }
+                    $delete_array = array('\b','\t', '?', '\r', '\n', '\r\n', '\n\r', '-', ' '); //欲刪除符號
+                    $data['買賣'] = str_replace ($delete_array,"",$data['買賣']);
+                    $data['價位'] = str_replace ($delete_array,"",$data['價位']);
+                    $data['張數'] = str_replace ($delete_array,"",$data['張數']);
+                    $data['來源'] = str_replace ($delete_array,"",$data['來源']);
+                    $data['手機1'] = str_replace ($delete_array,"",$data['手機1']);
+                    $data['手機2'] = str_replace ($delete_array,"",$data['手機2']);
+                    $data['company_name'] = str_replace ($delete_array,"",$data['company_name']);
+                    //$data['customer_name'] = str_replace ($delete_array,"",$data['customer_name']);
+                    $data['備註'] = str_replace (" ","",$data['備註']); //備註去掉空白就好
+                    $data['帳號'] = str_replace ("?","",$data['帳號']); //備註去掉空白就好
+
+                    $insertId = $this->show_db_model->insertCSV_to_table_all($data); //進資料庫table_all
+                    $processed_data = $this->show_db_model->show_all_number_processed($data['手機1']); //檢查篩選資料庫是否有此號碼
+                    if (empty($processed_data)) {
+                    	$this->show_db_model->insertCSV_to_table_processed($data); //進資料庫table_processed
+                    }
                 }
                 fclose($file);
                 echo '<span style="color:#FF0000;"><b>上傳成功</b></span>';
                 $this->load->view('show_db_view');
             } else {
             	echo '<span style="color:#FF0000;"><h1><b>你忘了選檔案嗎?</b></h1></span>';
+            	$this->load->view('show_db_view');
             }
+            $this->show_db_model->delete_title();
         }
     }
 
