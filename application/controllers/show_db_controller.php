@@ -38,8 +38,8 @@ class Show_db_controller extends CI_Controller {
 		$this->load->view('test');
 	}
 
-	//一般搜尋
-	public function show_db()
+	
+	public function show_db()//全部搜尋
 	{	
 		set_time_limit(0);
 
@@ -91,8 +91,7 @@ class Show_db_controller extends CI_Controller {
 	}
 
 
-	//搜尋...篩選過後無重複
-	public function show_all_number_processed()
+	public function show_all_number_processed()//搜尋手機篩選過後的資料
 	{	
 		set_time_limit(0);
 
@@ -142,8 +141,7 @@ class Show_db_controller extends CI_Controller {
 	}
 
 
-	//點更多打開的新視窗
-	public function show_notes()
+	public function show_notes()//點更多打開的新視窗
 	{
 		$id = $_GET['id'];
 		$this->load->Model("Show_db_model");
@@ -152,7 +150,7 @@ class Show_db_controller extends CI_Controller {
 	}
 
 
-	public function download_excel()
+	public function download_excel()//以excel下載查詢結果
 	{	
 		set_time_limit(0);
 		$this->load->Model("Show_db_model");
@@ -178,17 +176,18 @@ class Show_db_controller extends CI_Controller {
 			force_download($name, @iconv("UTF-8","Big5//IGNORE", $data2));
 
 		} else {
-			echo "fail";
+			echo '<span style="color:#FF0000;"><b>下載失敗</b></span>';
+			$this->load->view('show_db_view');
 		}
 		
 	}
 
-	public function login()
+	public function login()//登入頁面
 	{	
 		$this->load->view('login_view');
 	}
 
-	public function login_check()
+	public function login_check()//登入確認
 	{
 		if (isset($_POST['acct']) && isset($_POST['pswd'])) {
 			$account = $_POST['acct'];
@@ -213,5 +212,61 @@ class Show_db_controller extends CI_Controller {
 		}
 		
 	}
+
+
+	public function testing(){	
+		$this->load->model('show_db_model');
+        $this->load->view('test');
+	}
+
+
+	public function import(){
+
+      	if(isset($_POST["Import"])){
+      		$this->load->model('show_db_model');
+            $filename = $_FILES["file"]["tmp_name"];
+            if($_FILES["file"]["size"] > 0){
+            	//echo $_FILES["file"]["tmp_name"]."   ".$filename;
+            	//echo "檔案類型: " . $_FILES["file"]["type"]."<br/>";
+
+                $file = fopen($filename, "r");//
+
+                while (($emapData = fgetcsv($file, 10000, ",")) !== FALSE){ //抓資料成Array後進資料庫
+                	for ($i=0; $i < count($emapData); $i++) { //檢查編碼是否為UTF-8
+                		if (mb_detect_encoding($emapData[$i]) != "UTF-8") {
+                			$emapData[$i] = iconv(mb_detect_encoding($emapData[$i]), "UTF-8", $emapData[$i]);
+                		}
+                	}
+                    $data = array(
+                        '日期' => $emapData[0],
+                        '買賣' => $emapData[1],
+                        'LINE' => $emapData[2],
+                        'company_name' => $emapData[3],
+                        'customer_name' => $emapData[4],
+                        '電話' => $emapData[5],
+                        '手機1' => $emapData[6],
+                        '手機2' => $emapData[7],
+                        '價位' => $emapData[8],
+                        '張數' => $emapData[9],
+                        '來源' => $emapData[10],
+                        '備註' => $emapData[11],
+                        '帳號' => $emapData[12],
+                        '身分證字號' => $emapData[13],
+                        '地址' => $emapData[14],
+                        'EMAIL' => $emapData[15],
+                        );
+                    
+                    $insertId = $this->show_db_model->insertCSV($data); //進資料庫
+                }
+                fclose($file);
+                echo '<span style="color:#FF0000;"><b>上傳成功</b></span>';
+                $this->load->view('show_db_view');
+            } else {
+            	echo '<span style="color:#FF0000;"><h1><b>你忘了選檔案嗎?</b></h1></span>';
+            }
+        }
+    }
+
+
 
 }

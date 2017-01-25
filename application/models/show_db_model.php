@@ -130,4 +130,9 @@ class show_db_model extends CI_Model {
 			");//先放入欄位名稱
 	}
 
+
+	function insertCSV($data){
+        $this->db->insert('table3_test', $data);
+        return $this->db->insert_id();
+    }
 }

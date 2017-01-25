@@ -63,28 +63,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div align="center">
 			<form action="show_db" method="POST" name="" style= "display:inline">
 				<input type="text" name="keyword" value="">
-				<input type="submit" name="" value="原檔搜尋">
+				<input type="submit" name="" value="全部搜尋">
 			</form>
 		</div>
 
 		<div align="center">
 			<form action="show_all_number_processed" method="POST" name="" style= "display:inline">
 				<input type="text" name="keyword" value="">
-				<input type="submit" name="" value="單一搜尋">
+				<input type="submit" name="" value="手機搜尋">
 			</form>
 		</div>
 
 
 		<!-- 下載按鈕 -->
-		<form action="download_excel" method="POST">
-			<input type="submit" name="action" value="下載EXCEL">
-			<?php if (isset($keyword)) { ?>
-				<?php //echo $original_or_processed."<br>".$keyword; ?>
-				<input type="hidden" name="original_or_processed" value="<?php echo $original_or_processed; ?>">
-				<input type="hidden" name="download_keyword" value="<?php echo $keyword; ?>">
-			<?php } ?>
-		</form>
+		<div>
+			<form action="download_excel" method="POST">
+				<input type="submit" name="action" value="下載EXCEL">
+				<?php if (isset($keyword)) { ?>
+					<?php //echo $original_or_processed."<br>".$keyword; ?>
+					<input type="hidden" name="original_or_processed" value="<?php echo $original_or_processed; ?>">
+					<input type="hidden" name="download_keyword" value="<?php echo $keyword; ?>">
+				<?php } ?>
+			</form>
+		</div>
 		
+		<!-- 上傳按鈕 -->
+		<div>
+			<form class="form-horizontal well" action="<?php echo base_url(); ?>index.php/show_db_controller/import" method="post" name="upload_excel" enctype="multipart/form-data">
+				<input type="file" name="file" id="file" class="input-large">
+				<button type="submit" id="submit" name="Import" class="btn btn-primary button-loading">上傳</button>
+			</form>
+		</div>
 
 		<br><br>
 
