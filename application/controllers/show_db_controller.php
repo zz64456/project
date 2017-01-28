@@ -11,6 +11,7 @@ class Show_db_controller extends CI_Controller {
         $this->load->helper('date');
         date_default_timezone_set('Asia/Taipei');
         ini_set('memory_limit', '256M');
+        set_time_limit(0);
 
     }   
 
@@ -232,7 +233,9 @@ class Show_db_controller extends CI_Controller {
                 			$emapData[$i] = iconv(mb_detect_encoding($emapData[$i]), "UTF-8", $emapData[$i]);
                 		}
                 	}
-                    $data = array(
+                	//print_r($emapData);
+                	if ($emapData[0]!='日期') {
+                		$data = array(
                         '日期' => $emapData[0],
                         '買賣' => $emapData[1],
                         'LINE' => $emapData[2],
@@ -250,27 +253,28 @@ class Show_db_controller extends CI_Controller {
                         '地址' => $emapData[14],
                         'EMAIL' => $emapData[15],
                         );
-                    //以下修改欄位以便進資料庫OR輸出為EXCEL
-                    if (strlen($data['手機1'])>0 && $data['手機1'][0] == 9) { //判斷是否補上0
-                    	$data['手機1'] = "0".$data['手機1'];
-                    }
-                    $delete_array = array('\b','\t', '?', '\r', '\n', '\r\n', '\n\r', '-', ' '); //欲刪除符號
-                    $data['買賣'] = str_replace ($delete_array,"",$data['買賣']);
-                    $data['價位'] = str_replace ($delete_array,"",$data['價位']);
-                    $data['張數'] = str_replace ($delete_array,"",$data['張數']);
-                    $data['來源'] = str_replace ($delete_array,"",$data['來源']);
-                    $data['手機1'] = str_replace ($delete_array,"",$data['手機1']);
-                    $data['手機2'] = str_replace ($delete_array,"",$data['手機2']);
-                    $data['company_name'] = str_replace ($delete_array,"",$data['company_name']);
-                    //$data['customer_name'] = str_replace ($delete_array,"",$data['customer_name']);
-                    $data['備註'] = str_replace (" ","",$data['備註']); //備註去掉空白就好
-                    $data['帳號'] = str_replace ("?","",$data['帳號']); //備註去掉空白就好
+	                    //以下修改欄位以便進資料庫OR輸出為EXCEL
+	                    if (strlen($data['手機1'])>0 && $data['手機1'][0] == 9) { //判斷是否補上0
+	                    	$data['手機1'] = "0".$data['手機1'];
+	                    }
+	                    $delete_array = array('\b','\t', '?', '\r', '\n', '\r\n', '\n\r', '-', ' '); //欲刪除符號
+	                    $data['買賣'] = str_replace ($delete_array,"",$data['買賣']);
+	                    $data['價位'] = str_replace ($delete_array,"",$data['價位']);
+	                    $data['張數'] = str_replace ($delete_array,"",$data['張數']);
+	                    $data['來源'] = str_replace ($delete_array,"",$data['來源']);
+	                    $data['手機1'] = str_replace ($delete_array,"",$data['手機1']);
+	                    $data['手機2'] = str_replace ($delete_array,"",$data['手機2']);
+	                    $data['company_name'] = str_replace ($delete_array,"",$data['company_name']);
+	                    //$data['customer_name'] = str_replace ($delete_array,"",$data['customer_name']);
+	                    $data['備註'] = str_replace (" ","",$data['備註']); //備註去掉空白就好
+	                    $data['帳號'] = str_replace ("?","",$data['帳號']); //備註去掉空白就好
 
-                    $insertId = $this->show_db_model->insertCSV_to_table_all($data); //進資料庫table_all
-                    $processed_data = $this->show_db_model->show_all_number_processed($data['手機1']); //檢查篩選資料庫是否有此號碼
-                    if (empty($processed_data)) {
-                    	$this->show_db_model->insertCSV_to_table_processed($data); //進資料庫table_processed
-                    }
+	                    $insertId = $this->show_db_model->insertCSV_to_table_all($data); //進資料庫table_all
+	                    $processed_data = $this->show_db_model->show_all_number_processed($data['手機1']); //檢查篩選資料庫是否有此號碼
+	                    if (empty($processed_data)) {
+	                    	$this->show_db_model->insertCSV_to_table_processed($insertId); //進資料庫table_processed
+	                    }
+                	}
                 }
                 fclose($file);
                 echo '<span style="color:#FF0000;"><b>上傳成功</b></span>';

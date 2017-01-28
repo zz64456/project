@@ -112,15 +112,13 @@ class show_db_model extends CI_Model {
     }
 
     //匯入CSV檔案到table_processed
-	function insertCSV_to_table_processed($data){
-        $this->db->insert('table_processed', $data);
-        return $this->db->insert_id();
+	function insertCSV_to_table_processed($id){
+		$this->db->query("INSERT INTO table_processed SELECT * FROM table_all WHERE id='$id'");
     }
 
     //刪除欄位名稱
     function delete_title(){
-    	$tables = array('table_all', 'table_processed');
-		$this->db->where('日期', '日期');
-		$this->db->delete($tables);
+    	$this->db->query("DELETE FROM `table_all` WHERE `LINE` = 'LINE'");
+    	$this->db->query("DELETE FROM `table_processed` WHERE `LINE` = 'LINE'");
     }
 }
