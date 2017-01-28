@@ -9,7 +9,8 @@ class show_db_model extends CI_Model {
 																								 OR `電話` LIKE '%$keyword%'
 																								 OR `手機1` LIKE '%$keyword%'
 																								 OR `身分證字號` LIKE '%$keyword%'
-																								 OR `來源` LIKE '%$keyword%'");
+																								 OR `來源` LIKE '%$keyword%'
+																								 OR `備註` LIKE '%$keyword%'");
 		if($query->result()!=null){
 			foreach ($query->result() as $row) {
 				$result[] = array('id'=>$row-> id,

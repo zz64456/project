@@ -103,16 +103,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<th nowrap="nowrap">編號</th>
 				<th nowrap="nowrap">姓名</th>
 				<th nowrap="nowrap">日期</th>
-				<th nowrap="nowrap">買賣</th>
 				<th nowrap="nowrap">股票</th>
 				<th nowrap="nowrap">LINE</th>
 				<th nowrap="nowrap">電話</th>
 				<th nowrap="nowrap">手機1</th>
-				<th nowrap="nowrap">手機2</th>
-				<th nowrap="nowrap">價位</th>
-				<th nowrap="nowrap">張數</th>
 				<th nowrap="nowrap">來源</th>
-				<th nowrap="nowrap">身分證</th>
 				<th nowrap="nowrap">更多</th>
 			</tr>
 
@@ -124,16 +119,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					echo "<td>".$data[$i]['id']."</td>";
 					echo "<td>".$data[$i]['customer_name']."</td>";
 					echo "<td>".$data[$i]['日期']."</td>";
-					echo "<td>".$data[$i]['買賣']."</td>";
 					echo '<td nowrap="nowrap">'.$data[$i]['company_name']."</td>";
 					echo "<td>".$data[$i]['LINE']."</td>";
 					echo '<td nowrap="nowrap">'.$data[$i]['電話']."</td>";
 					echo "<td>".$data[$i]['手機1']."</td>";
-					echo "<td>".$data[$i]['手機2']."</td>";
-					echo "<td>".$data[$i]['價位']."</td>";
-					echo "<td>".$data[$i]['張數']."</td>";
 					echo "<td>".$data[$i]['來源']."</td>";
-					echo "<td>".$data[$i]['身分證字號']."</td>";
 			?>
 					<td nowrap="nowrap"><a href="#" onclick="window.open(' show_notes?id=<?php echo $data[$i]['id']; ?> ', '畚箕', config='height=600,width=1000');">更多</a></td>
 			<?php
