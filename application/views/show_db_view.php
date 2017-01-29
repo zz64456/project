@@ -17,15 +17,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		    border-collapse: collapse;
 		    width: 100%;
 		}
-
 		td, th {
 		    border: 1px solid #dddddd;
 		    text-align: left;
 		    padding: 8px;
 		}
-
 		tr:nth-child(even) {
 		    background-color: #dddddd;
+		}
+		.upload {
+			float: right;
+		}
+		.download {
+			float: left;
+		}
+		.information {
+			width:300px;
+			height:80px;
+			float:left;
+		}
+		.button {
+			width:1587px;
+			height:80px;
+			text-align:center;
+			line-height:80px;
+			text-align:center;
 		}
 	</style>
 
@@ -33,70 +49,66 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
 
-
-
 <div id="container">
 
-	<h1></h1>
+	<h1 style="text-align:center;color:#008800;"><b>查詢系統</b>	</h1>
 
 	<div id="body">
-
-		<?php 
-
-		echo "使用者帳號:".$_SESSION['user_name']."<br><br>";
-
-		if (isset($keyword)) {
-			echo "搜尋: <b>".$keyword."</b>";
-		}
-
-		if (isset($data)) {
-			echo "<br>";
-			echo "資料筆數: ". count($data)."<br>";
-		}
-		else {
-			echo "<br>";
-			echo "目前無資料";
-		}
-	
-		?>
-
-		<div align="center">
-			<form action="show_db" method="POST" name="" style= "display:inline">
-				<input type="text" name="keyword" value="">
-				<input type="submit" name="" value="全部搜尋">
-			</form>
-		</div>
-
-		<div align="center">
-			<form action="show_all_number_processed" method="POST" name="" style= "display:inline">
-				<input type="text" name="keyword" value="">
-				<input type="submit" name="" value="手機搜尋">
-			</form>
-		</div>
-
-
-		<!-- 下載按鈕 -->
 		<div>
-			<form action="download_excel" method="POST">
-				<input type="submit" name="action" value="下載EXCEL">
-				<?php if (isset($keyword)) { ?>
-					<?php //echo $original_or_processed."<br>".$keyword; ?>
-					<input type="hidden" name="original_or_processed" value="<?php echo $original_or_processed; ?>">
-					<input type="hidden" name="download_keyword" value="<?php echo $keyword; ?>">
-				<?php } ?>
-			</form>
+			<div class="information">
+				<?php 
+				echo "使用者帳號:".$_SESSION['user_name']."<br><br>";
+
+				if (isset($keyword)) {
+					echo "搜尋: <b>".$keyword."</b>";
+				}
+
+				if (isset($data)) {
+					echo "<br>";
+					echo "資料筆數: ". count($data)."<br>";
+				}
+				else {
+					echo "<br>";
+					echo "目前無資料";
+				} ?>
+			</div>
+			
+			<div class="button">
+				<form action="show_db" method="POST" name="" style= "display:inline">
+					<input type="text" name="keyword" value="">
+					<input type="submit" name="" value="全部搜尋">
+				</form>
+				<form action="show_all_number_processed" method="POST" name="" style= "display:inline">
+					<input type="text" name="keyword" value="">
+					<input type="submit" name="" value="去重複搜">
+				</form>
+			</div>
 		</div>
 		
-		<!-- 上傳按鈕 -->
-		<div>
-			<form class="form-horizontal well" action="<?php echo base_url(); ?>index.php/show_db_controller/import" method="post" name="upload_excel" enctype="multipart/form-data">
-				<input type="file" name="file" id="file" class="input-large">
-				<button type="submit" id="submit" name="Import" class="btn btn-primary button-loading">上傳</button>
-			</form>
+
+		<!-- 下載按鈕 -->
+		<div style="clear:left;">
+			<div class="download">
+				<form action="download_excel" method="POST">
+					<input type="submit" name="action" value="下載EXCEL">
+					<?php if (isset($keyword)) { ?>
+						<?php //echo $original_or_processed."<br>".$keyword; ?>
+						<input type="hidden" name="original_or_processed" value="<?php echo $original_or_processed; ?>">
+						<input type="hidden" name="download_keyword" value="<?php echo $keyword; ?>">
+					<?php } ?>
+				</form>
+			</div>
+			
+			<!-- 上傳按鈕 -->
+			<div class="upload">
+				<form class="form-horizontal well" action="<?php echo base_url(); ?>index.php/show_db_controller/import" method="post" name="upload_excel" enctype="multipart/form-data">
+					<input type="file" name="file" id="file" class="input-large">
+					<button type="submit" id="submit" name="Import" class="btn btn-primary button-loading">上傳</button>
+				</form>
+			</div>
 		</div>
-
+		
 		<br><br>
-
 
 		<table style="width:100%" border="1" >
 			<tr>

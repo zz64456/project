@@ -12,6 +12,7 @@ class Show_db_controller extends CI_Controller {
         date_default_timezone_set('Asia/Taipei');
         ini_set('memory_limit', '256M');
         set_time_limit(0);
+        $this->load->Model("Show_db_model");//載入model
 
     }   
 
@@ -61,7 +62,7 @@ class Show_db_controller extends CI_Controller {
 			$this->load->Model("Show_db_model");//載入model
 			$time = date("Y-m-d H:i:s");
 			$this->Show_db_model->move_record($_SESSION['user_name'], $time, 'search', $keyword);//動作紀錄
-
+			$keyword = str_replace( "-" , "" , $keyword);
 			$data = $this->Show_db_model->show_db($keyword);//撈資料
 			if (count($data)>=1) {
 				foreach ($data as $row ) {
@@ -197,13 +198,15 @@ class Show_db_controller extends CI_Controller {
 			$password = $_POST['pswd'];
 			$error_message = '輸入錯誤，再試一次!';
 			$this->load->Model("login_database");
-			$data = $this->login_database->login($account, $password);//進入新資料庫
+			$data = $this->login_database->login($account, $password);//比對資料庫
+			$time = date("Y-m-d H:i:s");			
 
 			if ($data != false) {
 				//print_r($data);
 				$_SESSION['account'] = $account;
 				$_SESSION['user_name'] = $data['user_name'];
 				//$this->load->library('../Show_db_controller/__construct');
+				$this->Show_db_model->move_record($_SESSION['user_name'], $time, 'login','');//動作紀錄
 				$this->load->view('show_db_view');
 				//redirect('/show_db_controller/show_db');
 			} else {
@@ -268,7 +271,10 @@ class Show_db_controller extends CI_Controller {
 	                    //$data['customer_name'] = str_replace ($delete_array,"",$data['customer_name']);
 	                    $data['備註'] = str_replace (" ","",$data['備註']); //備註去掉空白就好
 	                    $data['帳號'] = str_replace ("?","",$data['帳號']); //備註去掉空白就好
+	                    $data['日期'] = date("Y-m-d");
 
+	                    $time = date("Y-m-d H:i:s");
+						$this->Show_db_model->move_record($_SESSION['user_name'], $time, 'import', $keyword);//動作紀錄
 	                    $insertId = $this->show_db_model->insertCSV_to_table_all($data); //進資料庫table_all
 	                    $processed_data = $this->show_db_model->show_all_number_processed($data['手機1']); //檢查篩選資料庫是否有此號碼
 	                    if (empty($processed_data)) {

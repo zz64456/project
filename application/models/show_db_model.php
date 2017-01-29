@@ -8,6 +8,7 @@ class show_db_model extends CI_Model {
 		$query = $this->db->query("SELECT * FROM `table_all` WHERE `company_name` LIKE '%$keyword%' OR `customer_name` LIKE '%$keyword%'
 																								 OR `電話` LIKE '%$keyword%'
 																								 OR `手機1` LIKE '%$keyword%'
+																								 OR `手機2` LIKE '%$keyword%'
 																								 OR `身分證字號` LIKE '%$keyword%'
 																								 OR `來源` LIKE '%$keyword%'
 																								 OR `備註` LIKE '%$keyword%'");
@@ -60,7 +61,8 @@ class show_db_model extends CI_Model {
 																								 OR `電話` LIKE '%$keyword%'
 																								 OR `手機1` LIKE '%$keyword%'
 																								 OR `身分證字號` LIKE '%$keyword%'
-																								 OR `來源` LIKE '%$keyword%'");
+																								 OR `來源` LIKE '%$keyword%'
+																								 OR `備註` LIKE '%$keyword%'");
 		if($query->result()!=null){
 			foreach ($query->result() as $row) {
 				$result[] = array('id'=>$row-> id,
@@ -102,8 +104,11 @@ class show_db_model extends CI_Model {
 
 	//動作紀錄資料表
 	function move_record($user_name, $time, $move, $data){
-		$this->db->query("INSERT INTO `move_record`(`id`, `user_name`, `time`, `action`, `data`) VALUES ( '', '$user_name', '$time', '$move', '$data');
-			");//先放入欄位名稱
+		if (is_null($data)) {
+			$this->db->query("INSERT INTO `move_record`(`id`, `user_name`, `time`, `action`, `data`) VALUES ( '', '$user_name', '$time', '$move', '');");//先放入欄位名稱
+		} else {
+			$this->db->query("INSERT INTO `move_record`(`id`, `user_name`, `time`, `action`, `data`) VALUES ( '', '$user_name', '$time', '$move', '$data');");//先放入欄位名稱
+		}
 	}
 
 	//匯入CSV檔案到table_all
